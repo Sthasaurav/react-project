@@ -1,58 +1,53 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+const list = [
+  {
+    title: 'React',
+    url: 'https://reactjs.org/',
+    author: 'Jordan Walke',
+    num_comments: 3,
+    points: 4,
+    objectID: 0,
+  },
+  {
+    title: 'Redux',
+    url: 'https://redux.js.org/',
+    author: 'Dan Abramov, Andrew Clark',
+    num_comments: 2,
+    points: 5,
+    objectID: 1,
+  },
+];
 
 function App() {
-  const [principal, setPrincipal] = useState(1000);
-  const [rate, setRate] = useState(10);
-  const [time, setTime] = useState(5);
-  const [simpleInterest, setSimpleInterest] = useState(calculateSimpleInterest(principal, rate, time));
-  const [totalAmount, setTotalAmount] = useState(principal + simpleInterest);
-
-  function calculateSimpleInterest(principal, rate, time) {
-    return (principal * rate * time) / 100;
-  }
-
-  const handlePrincipal = (event) => {
-    const value = parseFloat(event.target.value);
-    setPrincipal(value);
-    const interest = calculateSimpleInterest(value, rate, time);
-    setSimpleInterest(interest);
-    setTotalAmount(value + interest);
-  };
-  const handleRate = (event) => {
-    const value = parseFloat(event.target.value);
-    setRate(value);
-    const interest = calculateSimpleInterest(principal, value, time);
-    setSimpleInterest(interest);
-    setTotalAmount(principal + interest);
-  };
-  const handleTime = (event) => {
-    const value = parseFloat(event.target.value);
-    setTime(value);
-    const interest = calculateSimpleInterest(principal, rate, value);
-    setSimpleInterest(interest);
-    setTotalAmount(principal + interest);
-  };
-
   return (
-    <div className="bg-gray-600 min-h-screen flex justify-center items-center">
-      <div className="max-w-md mx-auto bg-gray-800 text-white p-8 border rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold mb-4">Simple Interest Calculator</h2>
-        <div className="mb-4">
-          <label htmlFor="principle" className="block text-sm font-medium">Principal:</label>
-          <input type="text" value={principal} onChange={handlePrincipal} className="form-input mt-1 block w-full rounded-md bg-gray-700 text-white border-gray-600 focus:border-blue-300 focus:ring focus:ring-blue-200" />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="rate" className="block text-sm font-medium">Rate:</label>
-          <input type="text" value={rate} onChange={handleRate} className="form-input mt-1 block w-full rounded-md bg-gray-700 text-white border-gray-600 focus:border-blue-300 focus:ring focus:ring-blue-200" />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="time" className="block text-sm font-medium">Time:</label>
-          <input type="text" value={time} onChange={handleTime} className="form-input mt-1 block w-full rounded-md bg-gray-700 text-white border-gray-600 focus:border-blue-300 focus:ring focus:ring-blue-200" />
-        </div>
-        <div className="text-center">
-          <p className="mb-2">Simple Interest: ${simpleInterest.toFixed(2)}</p>
-          <p>Total Amount: ${totalAmount.toFixed(2)}</p>
-        </div>
+    <div className="bg-black text-white min-h-screen py-8">
+      <div className="max-w-4xl mx-auto px-4">
+        <h1 className="text-3xl font-bold mb-4">My Hacker Stories</h1>
+
+        <label htmlFor="search" className="block mb-4">
+          Search:
+        </label>
+        <input id="search" type="text" className="form-input bg-gray-800 text-white w-full rounded-md py-2 px-4 mb-4" />
+
+        <hr className="border-gray-600 mb-4" />
+
+        <ul>
+          {list.map(function (item) {
+            return (
+              <li key={item.objectID} className="mb-4">
+                <span className="text-lg font-bold">
+                  <a href={item.url} className="text-blue-400 hover:underline">
+                    {item.title}
+                  </a>
+                </span>
+                <span className="block text-sm text-gray-400">{item.author}</span>
+                <span className="block text-sm text-gray-400">Comments: {item.num_comments}</span>
+                <span className="block text-sm text-gray-400">Points: {item.points}</span>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );

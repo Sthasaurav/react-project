@@ -1,11 +1,13 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import data from "./data";
 import Navbar from "./Navbar";
+import SignInPage from "./Signin";
 
 const Accordion = () => {
   const [selected, setSelected] = useState(null);
   const [enableMultiSelection, setEnableMultiSelection] = useState(false);
   const [multiple, setMultiple] = useState([]);
+  const [isSignInPageOpen, setIsSignInPageOpen] = useState(false);
 
   function handleSingleSelection(getCurrentId) {
     setSelected(getCurrentId === selected ? null : getCurrentId);
@@ -21,9 +23,13 @@ const Accordion = () => {
     setMultiple(copyMultiple);
   }
 
+  const handleSignInButtonClick = () => {
+    setIsSignInPageOpen(true);
+  };
+
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      <Navbar />
+      <Navbar onSignInButtonClick={handleSignInButtonClick} />
       <div className="flex justify-center py-8">
         <div className="flex flex-col items-center">
           <button
@@ -60,6 +66,7 @@ const Accordion = () => {
           </div>
         </div>
       </div>
+      {isSignInPageOpen && <SignInPage onClose={() => setIsSignInPageOpen(false)} />}
     </div>
   );
 }

@@ -1,11 +1,8 @@
-//single selection
-//multiple selection
-
 import { useState } from "react";
 import data from "./data";
-import "./styles.css";
+import Navbar from "./Navbar";
 
-export default function Accordian() {
+const Accordion = () => {
   const [selected, setSelected] = useState(null);
   const [enableMultiSelection, setEnableMultiSelection] = useState(false);
   const [multiple, setMultiple] = useState([]);
@@ -15,54 +12,56 @@ export default function Accordian() {
   }
 
   function handleMultiSelection(getCurrentId) {
-    let cpyMutiple = [...multiple];
-    const findIndexOfCurrentId = cpyMutiple.indexOf(getCurrentId);
+    let copyMultiple = [...multiple];
+    const findIndexOfCurrentId = copyMultiple.indexOf(getCurrentId);
 
-    console.log(findIndexOfCurrentId);
-    if (findIndexOfCurrentId === -1) cpyMutiple.push(getCurrentId);
-    else cpyMutiple.splice(findIndexOfCurrentId, 1);
+    if (findIndexOfCurrentId === -1) copyMultiple.push(getCurrentId);
+    else copyMultiple.splice(findIndexOfCurrentId, 1);
 
-    setMultiple(cpyMutiple);
+    setMultiple(copyMultiple);
   }
 
-  console.log(selected, multiple);
   return (
-    <div className="acc-wrapper">
-      <button onClick={() => setEnableMultiSelection(!enableMultiSelection)}>
-        Enable Multi Selection
-      </button>
-      <div className="accordian">
-        {data && data.length > 0 ? (
-          data.map((dataItem) => (
-            <div className="item">
-              <div
-                onClick={
-                  enableMultiSelection
-                    ? () => handleMultiSelection(dataItem.id)
-                    : () => handleSingleSelection(dataItem.id)
-                }
-                className="title"
-              >
-                <h3>{dataItem.question}</h3>
-                <span>+</span>
-              </div>
-              {enableMultiSelection
-                ? multiple.indexOf(dataItem.id) !== -1 && (
-                    <div className="acc-content ">{dataItem.answer}</div>
-                  )
-                : selected === dataItem.id && (
-                    <div className="acc-content ">{dataItem.answer}</div>
+    <div className="bg-gray-900 text-white min-h-screen">
+      <Navbar />
+      <div className="flex justify-center py-8">
+        <div className="flex flex-col items-center">
+          <button
+            onClick={() => setEnableMultiSelection(!enableMultiSelection)}
+            className="mb-4 px-4 py-2 rounded bg-blue-500 text-white"
+          >
+            {enableMultiSelection ? "Disable Multi Selection" : "Enable Multi Selection"}
+          </button>
+          <div className="w-full max-w-xl">
+            {data && data.length > 0 ? (
+              data.map((dataItem) => (
+                <div key={dataItem.id} className="border border-gray-200 rounded mb-4 bg-gray-900">
+                  <div
+                    onClick={
+                      enableMultiSelection
+                        ? () => handleMultiSelection(dataItem.id)
+                        : () => handleSingleSelection(dataItem.id)
+                    }
+                    className={`p-4 flex justify-between items-center cursor-pointer ${selected === dataItem.id || (enableMultiSelection && multiple.indexOf(dataItem.id) !== -1) ? 'bg-gray-700' : 'bg-gray-900'}`}
+                  >
+                    <h3>{dataItem.question}</h3>
+                    <span className="text-xl">{selected === dataItem.id || (enableMultiSelection && multiple.indexOf(dataItem.id) !== -1) ? '-' : '+'}</span>
+                  </div>
+                  {(selected === dataItem.id || (enableMultiSelection && multiple.indexOf(dataItem.id) !== -1)) && (
+                    <div className="p-4 bg-gray-800">
+                      {dataItem.answer}
+                    </div>
                   )}
-              {/* {selected === dataItem.id ||
-              multiple.indexOf(dataItem.id) !== -1 ? (
-                <div className="content">{dataItem.answer}</div>
-              ) : null} */}
-            </div>
-          ))
-        ) : (
-          <div>No data found !</div>
-        )}
+                </div>
+              ))
+            ) : (
+              <div>No data found!</div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
+export default Accordion;
